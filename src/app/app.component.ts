@@ -4,9 +4,12 @@ import {
   NavigationEnd,
   NavigationError,
   NavigationStart,
-  Router
+  Router,
 } from "@angular/router";
-
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { AppState } from "./reducers";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -15,7 +18,9 @@ import {
 export class AppComponent implements OnInit {
   loading = true;
 
-  constructor(private router: Router) {}
+  isLoggedOut$ = this.store.pipe(map((state) => !state["auth"]?.user));
+
+  constructor(private router: Router, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.router.events.subscribe((event) => {
