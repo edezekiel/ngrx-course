@@ -32,7 +32,6 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" }),
     HttpClientModule,
     MatMenuModule,
     MatIconModule,
@@ -43,6 +42,7 @@ const routes: Routes = [
     AuthModule.forRoot(),
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" }),
   ],
   bootstrap: [AppComponent],
 })
