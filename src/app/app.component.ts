@@ -7,6 +7,7 @@ import {
   Router,
 } from "@angular/router";
 import { select, Store } from "@ngrx/store";
+import { logout } from "./auth/auth.actions";
 import { isLoggedOut } from "./auth/auth.selectors";
 import { AppState } from "./reducers";
 @Component({
@@ -42,5 +43,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  logout() {}
+  logout() {
+    this.store.dispatch(logout());
+  }
 }
