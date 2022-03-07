@@ -17,6 +17,7 @@ import { StoreModule } from "@ngrx/store";
 import { reducers, metaReducers } from "./store/reducers";
 import { AuthGuard } from "./auth/auth.guard";
 import { EffectsModule } from "@ngrx/effects";
+import { RouterState, StoreRouterConnectingModule } from "@ngrx/router-store";
 
 const routes: Routes = [
   {
@@ -49,9 +50,21 @@ const routes: Routes = [
       logOnly: environment.production,
     }),
     RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" }),
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictActionImmutability: true,
+        strictStateImmutability: true,
+        strictActionSerializability: true, // e.g., Dates are not serializable
+        strictStateSerializability: true, // e.g., to save state locally as json
+      },
+    }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: "router",
+      routerState: RouterState.Minimal,
+    }),
   ],
   bootstrap: [AppComponent],
 })
