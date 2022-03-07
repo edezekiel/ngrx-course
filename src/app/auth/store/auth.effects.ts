@@ -1,19 +1,19 @@
 import { Injectable } from "@angular/core";
-import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
+import { Router } from "@angular/router";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
-import { tap, map, exhaustMap, catchError } from "rxjs/operators";
+import { catchError, map, switchMap, tap } from "rxjs/operators";
 import { AuthService } from "../auth.service";
+import { User } from "../model/user.model";
 import { AuthActions } from "./action-types";
 import { loginFailure, loginSuccess } from "./auth.actions";
-import { User } from "../model/user.model";
-import { Router } from "@angular/router";
 
 @Injectable()
 export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
-      exhaustMap((action) =>
+      switchMap((action) =>
         this.authService.login(action.email, action.password).pipe(
           map((user: User) => loginSuccess({ user })),
           catchError((error) => of(loginFailure()))
