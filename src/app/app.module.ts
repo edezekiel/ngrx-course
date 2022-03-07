@@ -14,8 +14,9 @@ import { environment } from "../environments/environment";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
 import { StoreModule } from "@ngrx/store";
-import { reducers, metaReducers } from "./reducers";
+import { reducers, metaReducers } from "./store/reducers";
 import { AuthGuard } from "./auth/auth.guard";
+import { EffectsModule } from "@ngrx/effects";
 
 const routes: Routes = [
   {
@@ -50,6 +51,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" }),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([]),
   ],
   bootstrap: [AppComponent],
 })

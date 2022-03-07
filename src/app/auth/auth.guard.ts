@@ -5,8 +5,8 @@ import {
   RouterStateSnapshot,
 } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { AppState } from "../reducers";
-import { isLoggedIn } from "./auth.selectors";
+import { AppState } from "../store/reducers";
+import { isLoggedIn } from "./store/auth.selectors";
 
 @Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate {

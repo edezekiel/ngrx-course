@@ -7,9 +7,9 @@ import {
   Router,
 } from "@angular/router";
 import { select, Store } from "@ngrx/store";
-import { logout } from "./auth/auth.actions";
-import { isLoggedOut } from "./auth/auth.selectors";
-import { AppState } from "./reducers";
+import { logout } from "./auth/store/auth.actions";
+import { isLoggedOut } from "./auth/store/auth.selectors";
+import { AppState } from "./store/reducers";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
