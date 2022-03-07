@@ -6,9 +6,8 @@ import {
   NavigationStart,
   Router,
 } from "@angular/router";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { select, Store } from "@ngrx/store";
+import { isLoggedOut } from "./auth/auth.selectors";
 import { AppState } from "./reducers";
 @Component({
   selector: "app-root",
@@ -18,7 +17,7 @@ import { AppState } from "./reducers";
 export class AppComponent implements OnInit {
   loading = true;
 
-  isLoggedOut$ = this.store.pipe(map((state) => !state["auth"]?.user));
+  isLoggedOut$ = this.store.select(isLoggedOut);
 
   constructor(private router: Router, private store: Store<AppState>) {}
 
