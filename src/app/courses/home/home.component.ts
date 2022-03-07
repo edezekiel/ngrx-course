@@ -1,7 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { Store } from '@ngrx/store';
-import { Observable } from "rxjs";
 import { AppState } from '../../store/reducers';
 import { EditCourseDialogComponent } from "../edit-course-dialog/edit-course-dialog.component";
 import { defaultDialogConfig } from "../shared/default-dialog-config";
@@ -12,10 +11,8 @@ import { selectAdvancedCourses, selectBeginnerCourses, selectPromoTotal } from '
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   promoTotal$ = this.store.select(selectPromoTotal);
-
-  loading$: Observable<boolean>;
 
   beginnerCourses$ = this.store.select(selectBeginnerCourses)
 
@@ -25,14 +22,6 @@ export class HomeComponent implements OnInit {
     private dialog: MatDialog,
     private store: Store<AppState>
   ) {}
-
-  ngOnInit() {
-    this.reload();
-  }
-
-  reload() {
-
-  }
 
   onAddCourse() {
     const dialogConfig = defaultDialogConfig();

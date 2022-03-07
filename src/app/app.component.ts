@@ -4,9 +4,9 @@ import {
   NavigationEnd,
   NavigationError,
   NavigationStart,
-  Router,
+  Router
 } from "@angular/router";
-import { select, Store } from "@ngrx/store";
+import { Store } from "@ngrx/store";
 import { loginSuccess, logout } from "./auth/store/auth.actions";
 import { isLoggedOut } from "./auth/store/auth.selectors";
 import { AppState } from "./store/reducers";
