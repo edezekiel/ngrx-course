@@ -4,9 +4,12 @@ import {
   NavigationEnd,
   NavigationError,
   NavigationStart,
-  Router
+  Router,
 } from "@angular/router";
-
+import { select, Store } from "@ngrx/store";
+import { loginSuccess, logout } from "./auth/store/auth.actions";
+import { isLoggedOut } from "./auth/store/auth.selectors";
+import { AppState } from "./store/reducers";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -15,9 +18,13 @@ import {
 export class AppComponent implements OnInit {
   loading = true;
 
-  constructor(private router: Router) {}
+  isLoggedOut$ = this.store.select(isLoggedOut);
+
+  constructor(private router: Router, private store: Store<AppState>) {}
 
   ngOnInit() {
+    this._setUserFromLocalStorage();
+
     this.router.events.subscribe((event) => {
       switch (true) {
         case event instanceof NavigationStart: {
@@ -38,5 +45,14 @@ export class AppComponent implements OnInit {
     });
   }
 
-  logout() {}
+  logout() {
+    this.store.dispatch(logout());
+  }
+
+  private _setUserFromLocalStorage() {
+    const userProfile = localStorage.getItem("user");
+    if (userProfile) {
+      this.store.dispatch(loginSuccess({ user: JSON.parse(userProfile) }));
+    }
+  }
 }
