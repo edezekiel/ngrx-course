@@ -50,7 +50,15 @@ const routes: Routes = [
       logOnly: environment.production,
     }),
     RouterModule.forRoot(routes, { relativeLinkResolution: "legacy" }),
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictActionImmutability: true,
+        strictStateImmutability: true,
+        strictActionSerializability: true, // e.g., Dates are not serializable
+        strictStateSerializability: true, // e.g., to save state locally as json
+      },
+    }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot({
