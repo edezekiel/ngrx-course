@@ -16,16 +16,24 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatTabsModule } from "@angular/material/tabs";
 import { RouterModule, Routes } from "@angular/router";
+import { EffectsModule } from "@ngrx/effects";
+import { StoreModule } from "@ngrx/store";
 import { CourseComponent } from "./course/course.component";
 import { CoursesCardListComponent } from "./courses-card-list/courses-card-list.component";
+import { CoursesResolver } from "./courses.resolver";
 import { EditCourseDialogComponent } from "./edit-course-dialog/edit-course-dialog.component";
 import { HomeComponent } from "./home/home.component";
 import { CoursesHttpService } from "./services/courses-http.service";
+import { CoursesEffects } from "./store/courses.effects";
+import * as fromCourses from "./store/reducers";
 
 export const coursesRoutes: Routes = [
   {
     path: "",
     component: HomeComponent,
+    resolve: {
+      courses: CoursesResolver,
+    },
   },
   {
     path: ":courseUrl",
@@ -52,6 +60,8 @@ export const coursesRoutes: Routes = [
     MatMomentDateModule,
     ReactiveFormsModule,
     RouterModule.forChild(coursesRoutes),
+    EffectsModule.forFeature([CoursesEffects]),
+    StoreModule.forFeature(fromCourses.coursesKey, fromCourses.coursesReducer),
   ],
   declarations: [
     HomeComponent,
