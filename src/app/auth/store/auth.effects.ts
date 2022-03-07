@@ -10,6 +10,18 @@ import { loginFailure, loginSuccess } from "./auth.actions";
 
 @Injectable()
 export class AuthEffects {
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.logout),
+        tap((action) => {
+          localStorage.removeItem("user");
+          this.router.navigateByUrl("/login");
+        })
+      ),
+    { dispatch: false }
+  );
+
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
