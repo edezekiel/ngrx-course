@@ -1,12 +1,9 @@
 import { Component, Inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Update } from "@ngrx/entity";
-import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { AppState } from "../../store/reducers";
 import { Course } from "../model/course";
-import { updateCourse } from "../store/courses.actions";
+import { CourseEntityService } from "../services/course-entity.service";
 
 @Component({
   selector: "course-dialog",
@@ -24,7 +21,7 @@ export class EditCourseDialogComponent {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditCourseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data,
-    private store: Store<AppState>
+    private coursesService: CourseEntityService
   ) {
     this.dialogTitle = data.dialogTitle;
     this.course = data.course;
@@ -59,13 +56,9 @@ export class EditCourseDialogComponent {
       ...this.form.value,
     };
 
-    const update: Update<Course> = {
-      id: course.id,
-      changes: course,
-    };
-
-    this.store.dispatch(updateCourse({ update }));
-
-    this.dialogRef.close();
+    if (this.mode === "update") {
+      this.coursesService.update(course);
+      this.dialogRef.close();
+    }
   }
 }

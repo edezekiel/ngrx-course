@@ -19,20 +19,16 @@ import { RouterModule, Routes } from "@angular/router";
 import {
   EntityDataService,
   EntityDefinitionService,
-  EntityMetadataMap
+  EntityMetadataMap,
 } from "@ngrx/data";
-import { EffectsModule } from "@ngrx/effects";
-import { StoreModule } from "@ngrx/store";
 import { CourseComponent } from "./course/course.component";
 import { CoursesCardListComponent } from "./courses-card-list/courses-card-list.component";
 import { EditCourseDialogComponent } from "./edit-course-dialog/edit-course-dialog.component";
 import { HomeComponent } from "./home/home.component";
-import { compareCourses } from './model/course';
+import { compareCourses } from "./model/course";
 import { CoursesDataService } from "./services/courses-data.service";
 import { CoursesHttpService } from "./services/courses-http.service";
 import { CoursesResolver } from "./services/courses.resolver";
-import { CoursesEffects } from "./store/courses.effects";
-import * as fromCourses from "./store/reducers";
 
 export const coursesRoutes: Routes = [
   {
@@ -53,7 +49,10 @@ export const coursesRoutes: Routes = [
 
 const entityMetadata: EntityMetadataMap = {
   Course: {
-    sortComparer: compareCourses
+    sortComparer: compareCourses,
+    entityDispatcherOptions: {
+      optimisticUpdate: true,
+    },
   },
 };
 @NgModule({
@@ -75,8 +74,6 @@ const entityMetadata: EntityMetadataMap = {
     MatMomentDateModule,
     ReactiveFormsModule,
     RouterModule.forChild(coursesRoutes),
-    EffectsModule.forFeature([CoursesEffects]),
-    StoreModule.forFeature(fromCourses.coursesKey, fromCourses.coursesReducer),
   ],
   declarations: [
     HomeComponent,
