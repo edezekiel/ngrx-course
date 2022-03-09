@@ -26,6 +26,7 @@ import { CoursesCardListComponent } from "./courses-card-list/courses-card-list.
 import { EditCourseDialogComponent } from "./edit-course-dialog/edit-course-dialog.component";
 import { HomeComponent } from "./home/home.component";
 import { compareCourses } from "./model/course";
+import { compareLessons } from './model/lesson';
 import { CoursesDataService } from "./services/courses-data.service";
 import { CoursesHttpService } from "./services/courses-http.service";
 import { CoursesResolver } from "./services/courses.resolver";
@@ -54,6 +55,9 @@ const entityMetadata: EntityMetadataMap = {
       optimisticUpdate: true,
     },
   },
+  Lesson: {
+    sortComparer: compareLessons
+  }
 };
 @NgModule({
   imports: [
