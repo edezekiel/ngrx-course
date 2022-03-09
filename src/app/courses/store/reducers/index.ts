@@ -6,7 +6,6 @@ import { CourseActions } from "../action-types";
 export const coursesKey = "courses";
 
 export interface CoursesState extends EntityState<Course> {
-  allCoursesLoaded: boolean;
 }
 
 export const adapter = createEntityAdapter<Course>({
@@ -14,14 +13,10 @@ export const adapter = createEntityAdapter<Course>({
 });
 
 export const initialCoursesState = adapter.getInitialState({
-  allCoursesLoaded: false,
 });
 
 export const coursesReducer = createReducer(
   initialCoursesState,
-  on(CourseActions.getAllCoursesSuccess, (state, action) =>
-    adapter.addMany(action.courses, { ...state, allCoursesLoaded: true })
-  ),
   on(CourseActions.updateCourse, (state, action) =>
     adapter.updateOne(action.update, state)
   )

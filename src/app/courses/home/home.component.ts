@@ -1,8 +1,6 @@
 import { Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Store } from "@ngrx/store";
 import { map } from "rxjs/operators";
-import { AppState } from "../../store/reducers";
 import { EditCourseDialogComponent } from "../edit-course-dialog/edit-course-dialog.component";
 import { CourseEntityService } from "../services/course-entity.service";
 import { defaultDialogConfig } from "../shared/default-dialog-config";
@@ -25,7 +23,6 @@ export class HomeComponent {
 
   constructor(
     private dialog: MatDialog,
-    private store: Store<AppState>,
     private coursesEntityService: CourseEntityService
   ) {}
 
