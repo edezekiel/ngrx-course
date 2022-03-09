@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { combineLatest } from "rxjs";
 import { delay, map, tap } from "rxjs/operators";
@@ -13,7 +13,7 @@ import { LessonEntityService } from "../services/lesson-entity.service";
   styleUrls: ["./course.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CourseComponent implements OnInit {
+export class CourseComponent {
   course$ = this.coursesService.entities$.pipe(
     map((cs) =>
       cs.find((c) => c.url === this.route.snapshot.paramMap.get("courseUrl"))
@@ -40,8 +40,6 @@ export class CourseComponent implements OnInit {
     private lessonsService: LessonEntityService,
     private route: ActivatedRoute
   ) {}
-
-  ngOnInit(): void {}
 
   loadLessonsPage(course: Course) {
     this.lessonsService.getWithQuery({
