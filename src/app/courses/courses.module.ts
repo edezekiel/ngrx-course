@@ -16,16 +16,20 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatTabsModule } from "@angular/material/tabs";
 import { RouterModule, Routes } from "@angular/router";
-import { EffectsModule } from "@ngrx/effects";
-import { StoreModule } from "@ngrx/store";
+import {
+  EntityDataService,
+  EntityDefinitionService,
+  EntityMetadataMap,
+} from "@ngrx/data";
 import { CourseComponent } from "./course/course.component";
 import { CoursesCardListComponent } from "./courses-card-list/courses-card-list.component";
-import { CoursesResolver } from "./courses.resolver";
 import { EditCourseDialogComponent } from "./edit-course-dialog/edit-course-dialog.component";
 import { HomeComponent } from "./home/home.component";
+import { compareCourses } from "./model/course";
+import { compareLessons } from './model/lesson';
+import { CoursesDataService } from "./services/courses-data.service";
 import { CoursesHttpService } from "./services/courses-http.service";
-import { CoursesEffects } from "./store/courses.effects";
-import * as fromCourses from "./store/reducers";
+import { CoursesResolver } from "./services/courses.resolver";
 
 export const coursesRoutes: Routes = [
   {
@@ -38,9 +42,23 @@ export const coursesRoutes: Routes = [
   {
     path: ":courseUrl",
     component: CourseComponent,
+    resolve: {
+      courses: CoursesResolver,
+    },
   },
 ];
 
+const entityMetadata: EntityMetadataMap = {
+  Course: {
+    sortComparer: compareCourses,
+    entityDispatcherOptions: {
+      optimisticUpdate: true,
+    },
+  },
+  Lesson: {
+    sortComparer: compareLessons
+  }
+};
 @NgModule({
   imports: [
     CommonModule,
@@ -60,8 +78,6 @@ export const coursesRoutes: Routes = [
     MatMomentDateModule,
     ReactiveFormsModule,
     RouterModule.forChild(coursesRoutes),
-    EffectsModule.forFeature([CoursesEffects]),
-    StoreModule.forFeature(fromCourses.coursesKey, fromCourses.coursesReducer),
   ],
   declarations: [
     HomeComponent,
@@ -79,5 +95,12 @@ export const coursesRoutes: Routes = [
   providers: [CoursesHttpService],
 })
 export class CoursesModule {
-  constructor() {}
+  constructor(
+    private eds: EntityDefinitionService,
+    private entityDataService: EntityDataService,
+    private coursesDataService: CoursesDataService
+  ) {
+    this.eds.registerMetadataMap(entityMetadata);
+    this.entityDataService.registerService("Course", this.coursesDataService);
+  }
 }
